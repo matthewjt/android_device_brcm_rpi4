@@ -1,0 +1,56 @@
+// KonstaKANG apps + LineageOS Wraith overlays imported presigned (keeps original signatures).
+
+android_app_import {
+    name: "DeviceSettings",
+    apk: "DeviceSettings.apk",
+    presigned: true,
+    privileged: true,
+}
+
+android_app_import {
+    name: "LineageCustomizer",
+    apk: "LineageCustomizer.apk",
+    presigned: true,
+    privileged: true,
+    product_specific: true,
+}
+
+android_app_import {
+    name: "DocumentsUIOverlay",
+    apk: "DocumentsUIOverlay.apk",
+    presigned: true,
+    overlay: true,
+    product_specific: true,
+}
+
+android_app_import {
+    name: "NetworkStackOverlay",
+    apk: "NetworkStackOverlay.apk",
+    presigned: true,
+    overlay: true,
+    product_specific: true,
+}
+
+android_app_import {
+    name: "PermissionControllerOverlay",
+    apk: "PermissionControllerOverlay.apk",
+    presigned: true,
+    overlay: true,
+    product_specific: true,
+}
+
+android_app_import {
+    name: "LineageGoogleSetupWraithOverlay",
+    apk: "LineageGoogleSetupWraithOverlay.apk",
+    presigned: true,
+    overlay: true,
+    product_specific: true,
+}
+
+android_app_import {
+    name: "LineageGoogleSetupWraithPairingOverlay",
+    apk: "LineageGoogleSetupWraithPairingOverlay.apk",
+    presigned: true,
+    overlay: true,
+    product_specific: true,
+}

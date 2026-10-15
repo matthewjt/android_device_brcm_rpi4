@@ -197,3 +197,13 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
+
+# KonstaKANG apps + LineageOS Wraith overlays (imported presigned)
+PRODUCT_PACKAGES += \
+    DeviceSettings \
+    LineageCustomizer \
+    DocumentsUIOverlay \
+    NetworkStackOverlay \
+    PermissionControllerOverlay \
+    LineageGoogleSetupWraithOverlay \
+    LineageGoogleSetupWraithPairingOverlay
