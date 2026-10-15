@@ -198,14 +198,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
-# KonstaKANG apps + LineageOS Wraith overlays (imported presigned)
+# KonstaKANG apps + LineageOS Wraith overlays (imported presigned via BUILD_PREBUILT in konsta_apps/Android.mk)
 PRODUCT_PACKAGES += \
     DeviceSettings \
-    LineageCustomizer
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/konsta_apps/DocumentsUIOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/DocumentsUIOverlay.apk \
-    $(LOCAL_PATH)/konsta_apps/NetworkStackOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/NetworkStackOverlay.apk \
-    $(LOCAL_PATH)/konsta_apps/PermissionControllerOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/PermissionControllerOverlay.apk \
-    $(LOCAL_PATH)/konsta_apps/LineageGoogleSetupWraithOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/LineageGoogleSetupWraithOverlay.apk \
-    $(LOCAL_PATH)/konsta_apps/LineageGoogleSetupWraithPairingOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/LineageGoogleSetupWraithPairingOverlay.apk
+    LineageCustomizer \
+    DocumentsUIOverlay \
+    NetworkStackOverlay \
+    PermissionControllerOverlay \
+    LineageGoogleSetupWraithOverlay \
+    LineageGoogleSetupWraithPairingOverlay
