@@ -201,9 +201,11 @@ PRODUCT_COPY_FILES += \
 # KonstaKANG apps + LineageOS Wraith overlays (imported presigned)
 PRODUCT_PACKAGES += \
     DeviceSettings \
-    LineageCustomizer \
-    DocumentsUIOverlay \
-    NetworkStackOverlay \
-    PermissionControllerOverlay \
-    LineageGoogleSetupWraithOverlay \
-    LineageGoogleSetupWraithPairingOverlay
+    LineageCustomizer
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/konsta_apps/DocumentsUIOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/DocumentsUIOverlay.apk \
+    $(LOCAL_PATH)/konsta_apps/NetworkStackOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/NetworkStackOverlay.apk \
+    $(LOCAL_PATH)/konsta_apps/PermissionControllerOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/PermissionControllerOverlay.apk \
+    $(LOCAL_PATH)/konsta_apps/LineageGoogleSetupWraithOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/LineageGoogleSetupWraithOverlay.apk \
+    $(LOCAL_PATH)/konsta_apps/LineageGoogleSetupWraithPairingOverlay.apk:$(TARGET_COPY_OUT_PRODUCT)/overlay/LineageGoogleSetupWraithPairingOverlay.apk
