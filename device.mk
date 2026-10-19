@@ -198,6 +198,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
-# KonstaKANG apps (bisect: ONLY DeviceSettings, imported presigned via BUILD_PREBUILT in konsta_apps/Android.mk)
+# KonstaKANG apps (imported presigned via BUILD_PREBUILT in konsta_apps/Android.mk)
+# DeviceSettings is re-signed with the AOSP platform key: sharedUserId=android.uid.system
+# requires the platform signature. RRO overlays stay out until this pair is verified.
 PRODUCT_PACKAGES += \
-    DeviceSettings
+    DeviceSettings \
+    LineageCustomizer
