@@ -3,7 +3,15 @@ arm_64bit=1
 kernel=Image
 
 # Ramdisk
+# GPIO21 (physical pin 40) is sampled by the Pi firmware at power-on:
+#   high (default, internal pull-up) -> normal Android boot
+#   low  (short pin 40 to GND pin 39, or driven low by rpi-recovery.sh) -> TWRP recovery
+gpio=21=ip,pu
+[gpio21=1]
 initramfs ramdisk.img followkernel
+[gpio21=0]
+initramfs ramdisk-recovery.img followkernel
+[all]
 
 # Audio
 dtparam=audio=on
@@ -24,9 +32,11 @@ disable_overscan=1
 #dtoverlay=vc4-kms-dsi-ili9881-5inch
 #dtoverlay=vc4-kms-dsi-ili9881-7inch
 
-# Graphics acceleration
+# Graphics acceleration (gated off in recovery, matching the KonstaKANG reference)
 disable_fw_kms_setup=1
+[gpio21=1]
 dtoverlay=vc4-kms-v3d
+[all]
 
 # I2C
 #dtparam=i2c_arm=on

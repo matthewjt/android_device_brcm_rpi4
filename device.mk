@@ -198,6 +198,11 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
+# Drives GPIO21 low and reboots so the Pi firmware loads the TWRP initramfs
+# (triggered by sys.rpi.recovery=1 in ramdisk/init.rpi4.rc).
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/ramdisk/rpi-recovery.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rpi-recovery.sh:executable
+
 # KonstaKANG apps (imported presigned via BUILD_PREBUILT in konsta_apps/Android.mk)
 # DeviceSettings is re-signed with the AOSP platform key: sharedUserId=android.uid.system
 # requires the platform signature. RRO overlays stay out until this pair is verified.

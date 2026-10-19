@@ -8,3 +8,10 @@ on fs
 
 on late-fs
     mount_all /vendor/etc/fstab.${ro.hardware} --late
+
+# Request TWRP on the next boot: drive GPIO21 (pin 40) low, then reboot.
+# The "Raspberry Pi settings" app writes sys.rpi.recovery=1 for exactly this;
+# it can also be triggered by hand: adb shell setprop sys.rpi.recovery 1
+on property:sys.rpi.recovery=1
+    exec -- /system/bin/sh /system/bin/rpi-recovery.sh
+    setprop sys.rpi.recovery 0
