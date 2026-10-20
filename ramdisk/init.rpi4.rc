@@ -9,9 +9,17 @@ on fs
 on late-fs
     mount_all /vendor/etc/fstab.${ro.hardware} --late
 
-# Request TWRP on the next boot: drive GPIO21 (pin 40) low, then reboot.
+# GPIO21 (physical pin 40) is what the Pi firmware samples at power-on to pick the
+# initramfs. Export it once early so the recovery trigger only has to drive it low.
+# init's built-in write/reboot run in the init domain: no SELinux domain transition
+# needed (init's 'exec' of /system/bin/sh fails outright - no init->shell transition).
+on early-boot
+    write /sys/class/gpio/export 21
+
+# Request TWRP on the next boot: drive GPIO21 low, then reboot.
 # The "Raspberry Pi settings" app writes sys.rpi.recovery=1 for exactly this;
 # it can also be triggered by hand: adb shell setprop sys.rpi.recovery 1
 on property:sys.rpi.recovery=1
-    exec -- /system/bin/sh /system/bin/rpi-recovery.sh
-    setprop sys.rpi.recovery 0
+    write /sys/class/gpio/gpio21/direction out
+    write /sys/class/gpio/gpio21/value 0
+    reboot
