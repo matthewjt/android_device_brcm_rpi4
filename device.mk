@@ -219,7 +219,7 @@ PRODUCT_PACKAGES += \
     sshd_bin \
     ssh_client \
     ssh_keygen \
-    libssh_prebuilt
+    libssh
 
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/konsta_apps/ssh/sshd.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/sshd.rc \
