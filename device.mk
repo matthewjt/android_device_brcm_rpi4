@@ -206,8 +206,11 @@ PRODUCT_COPY_FILES += \
 # KonstaKANG apps (imported presigned via BUILD_PREBUILT in konsta_apps/Android.mk)
 # DeviceSettings is re-signed with the AOSP platform key: sharedUserId=android.uid.system
 # requires the platform signature. RRO overlays stay out until this pair is verified.
-# KangTvSettingsTwoPanel = KonstaKANG's patched TV Settings (raspberry row + Restart-to-
-# recovery), platform re-sign, replaces the stock module (see aosp_rpi4_tv.mk).
+# KangTvSettingsTwoPanel = SOONG prebuilt_apk (konsta_apps/Android.bp,
+# soong_override_module) of KonstaKANG's patched TV Settings (raspberry row + Restart-to-
+# recovery; platform re-signed). Replaces the stock TvSettingsTwoPanel and stubs the
+# classic TvSettings (same package; kati filter-out provably cannot remove inherited
+# packages - see Android.bp). RRO overlays stay out until this pair is verified.
 PRODUCT_PACKAGES += \
     DeviceSettings \
     LineageCustomizer \

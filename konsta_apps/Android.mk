@@ -33,36 +33,10 @@ LOCAL_DEX_PREOPT := false
 LOCAL_ENFORCE_USES_LIBRARIES := false
 include $(BUILD_PREBUILT)
 
-# KangTvSettingsTwoPanel -> /system_ext/priv-app/TvSettingsTwoPanel
-# KonstaKANG's PATCHED Android TV Settings app, re-signed with the platform test key
-# (sharedUserId=android.uid.system; his CN=KonstaKANG.com signature must be replaced).
-# Contains two features the stock AOSP app lacks:
-#   1) a hard-coded "Raspberry Pi settings" row in the Device-preferences panel
-#      (launches com.konstakang.settings.device/.RaspberryLeanbackSettingsActivity) -
-#      ATV Settings has NO third-party tile scanner, so this is the only way to surface it;
-#   2) a "Restart to recovery" button in the Restart dialog that sets
-#      sys.rpi.recovery=recovery -> init drives GPIO21 low -> reboot loads TWRP ramdisk.
-# Replaces the stock build-time module (removed from PRODUCT_PACKAGES in aosp_rpi4_tv.mk).
-# Declared permissions are identical to stock, so stock privapp-permissions apply unchanged.
-# Module name KangTvSettingsTwoPanel (NOT the stock name: a BUILD_PREBUILT sharing the
-# Soong module name TvSettingsTwoPanel collides at analysis). Installed as
-# system_ext/priv-app/KangTvSettingsTwoPanel/KangTvSettingsTwoPanel.apk - the install
-# DIRECTORY/filename is functionally irrelevant (PMS scans all priv-app *.apk; package
-# name com.android.tv.settings is what matters). LOCAL_MODULE_STEM is ignored by
-# priv-app prebuilts (verified: build emitted <module>.apk).
-include $(CLEAR_VARS)
-LOCAL_MODULE := KangTvSettingsTwoPanel
-LOCAL_MODULE_CLASS := APPS
-LOCAL_MODULE_TAGS := optional
-LOCAL_SRC_FILES := TvSettingsTwoPanel-kang.apk
-LOCAL_MODULE_SUFFIX := $(COMMON_ANDROID_PACKAGE_SUFFIX)
-LOCAL_MODULE_PATH := $(TARGET_OUT_SYSTEM_EXT)/priv-app
-LOCAL_MODULE_STEM := TvSettingsTwoPanel.apk
-LOCAL_PRIVILEGED_MODULE := true
-LOCAL_CERTIFICATE := PRESIGNED
-LOCAL_DEX_PREOPT := false
-LOCAL_ENFORCE_USES_LIBRARIES := false
-include $(BUILD_PREBUILT)
+# KangTvSettingsTwoPanel: MOVED to Android.bp (soong prebuilt_apk +
+# soong_override_module). The kati BUILD_PREBUILT route could not remove the stock
+# com.android.tv.settings apps (attempt 6: kati filter-out provably cannot touch
+# packages appended by inherited products) -> soong override replaces them.
 
 # SSH infrastructure (KonstaKANG's OpenSSH stack) -> /system (user request 2026-10-22).
 # Toggle: DeviceSettings "SSH" switch sets persist.sshd.enabled (app side, baked).

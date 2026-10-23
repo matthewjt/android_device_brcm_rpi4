@@ -22,11 +22,13 @@ PRODUCT_PACKAGES += \
     TvProvision \
     TvSampleLeanbackLauncher \
     KangTvSettingsTwoPanel
-# NOTE: KangTvSettingsTwoPanel = BUILD_PREBUILT import of KonstaKANG's patched TV
-# Settings ("Raspberry Pi settings" row in Device preferences + "Restart to recovery"
-# in the Restart dialog). BOTH stock apps declaring package com.android.tv.settings
-# are filtered out: TvSettingsTwoPanel (atv_system_ext.mk) and the classic TvSettings
-# (atv_system_ext.mk:29). Duplicate packages = PMS fatal install failure boot loop.
+# NOTE: KangTvSettingsTwoPanel = soong prebuilt_apk import (konsta_apps/Android.bp)
+# of KonstaKANG's patched TV Settings ("Raspberry Pi settings" row in Device
+# preferences + "Restart to recovery" in the Restart dialog). It overrides the stock
+# TvSettingsTwoPanel; KangTvSettingsClassic (installable:false) stubs the classic
+# TvSettings slot added by atv_system_ext.mk (same package com.android.tv.settings ->
+# duplicate = PMS boot loop). The kati filter-out below provably CANNOT remove
+# inherited packages (attempt 6) - harmless leftover, kept as a no-op safety net.
 PRODUCT_PACKAGES := $(filter-out TvSettings TvSettingsTwoPanel,$(PRODUCT_PACKAGES))
 
 # Bluetooth
