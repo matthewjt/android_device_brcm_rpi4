@@ -22,10 +22,12 @@ PRODUCT_PACKAGES += \
     TvProvision \
     TvSampleLeanbackLauncher \
     KangTvSettingsTwoPanel
-# NOTE: stock TvSettingsTwoPanel replaced by KangTvSettingsTwoPanel (KonstaKANG's
-# patched app: "Raspberry Pi settings" row in Device preferences + "Restart to
-# recovery" in the Restart dialog). The stock Soong module simply stops being
-# installed; its source stays in the tree untouched.
+# NOTE: KangTvSettingsTwoPanel = BUILD_PREBUILT import of KonstaKANG's patched TV
+# Settings ("Raspberry Pi settings" row in Device preferences + "Restart to recovery"
+# in the Restart dialog). BOTH stock apps declaring package com.android.tv.settings
+# are filtered out: TvSettingsTwoPanel (atv_system_ext.mk) and the classic TvSettings
+# (atv_system_ext.mk:29). Duplicate packages = PMS fatal install failure boot loop.
+PRODUCT_PACKAGES := $(filter-out TvSettings TvSettingsTwoPanel,$(PRODUCT_PACKAGES))
 
 # Bluetooth
 PRODUCT_VENDOR_PROPERTIES += \

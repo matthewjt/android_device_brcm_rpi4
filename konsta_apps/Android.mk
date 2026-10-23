@@ -44,6 +44,12 @@ include $(BUILD_PREBUILT)
 #      sys.rpi.recovery=recovery -> init drives GPIO21 low -> reboot loads TWRP ramdisk.
 # Replaces the stock build-time module (removed from PRODUCT_PACKAGES in aosp_rpi4_tv.mk).
 # Declared permissions are identical to stock, so stock privapp-permissions apply unchanged.
+# Module name KangTvSettingsTwoPanel (NOT the stock name: a BUILD_PREBUILT sharing the
+# Soong module name TvSettingsTwoPanel collides at analysis). Installed as
+# system_ext/priv-app/KangTvSettingsTwoPanel/KangTvSettingsTwoPanel.apk - the install
+# DIRECTORY/filename is functionally irrelevant (PMS scans all priv-app *.apk; package
+# name com.android.tv.settings is what matters). LOCAL_MODULE_STEM is ignored by
+# priv-app prebuilts (verified: build emitted <module>.apk).
 include $(CLEAR_VARS)
 LOCAL_MODULE := KangTvSettingsTwoPanel
 LOCAL_MODULE_CLASS := APPS
