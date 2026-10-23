@@ -21,7 +21,11 @@ PRODUCT_PACKAGES += \
     LeanbackIME \
     TvProvision \
     TvSampleLeanbackLauncher \
-    TvSettingsTwoPanel
+    KangTvSettingsTwoPanel
+# NOTE: stock TvSettingsTwoPanel replaced by KangTvSettingsTwoPanel (KonstaKANG's
+# patched app: "Raspberry Pi settings" row in Device preferences + "Restart to
+# recovery" in the Restart dialog). The stock Soong module simply stops being
+# installed; its source stays in the tree untouched.
 
 # Bluetooth
 PRODUCT_VENDOR_PROPERTIES += \

@@ -23,3 +23,10 @@ on property:sys.rpi.recovery=1
     write /sys/class/gpio/gpio21/direction out
     write /sys/class/gpio/gpio21/value 0
     setprop sys.powerctl reboot
+
+# Same action as sent by KangTvSettingsTwoPanel's "Restart to recovery" button
+# (SystemProperties.set("sys.rpi.recovery","recovery") in KonstaKANG's RebootConfirmFragment).
+on property:sys.rpi.recovery=recovery
+    write /sys/class/gpio/gpio21/direction out
+    write /sys/class/gpio/gpio21/value 0
+    setprop sys.powerctl reboot

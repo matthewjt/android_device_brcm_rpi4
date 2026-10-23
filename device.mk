@@ -206,6 +206,22 @@ PRODUCT_COPY_FILES += \
 # KonstaKANG apps (imported presigned via BUILD_PREBUILT in konsta_apps/Android.mk)
 # DeviceSettings is re-signed with the AOSP platform key: sharedUserId=android.uid.system
 # requires the platform signature. RRO overlays stay out until this pair is verified.
+# KangTvSettingsTwoPanel = KonstaKANG's patched TV Settings (raspberry row + Restart-to-
+# recovery), platform re-sign, replaces the stock module (see aosp_rpi4_tv.mk).
 PRODUCT_PACKAGES += \
     DeviceSettings \
-    LineageCustomizer
+    LineageCustomizer \
+    KangTvSettingsTwoPanel
+
+# SSH infrastructure (KonstaKANG OpenSSH stack; toggle = DeviceSettings "SSH" ->
+# persist.sshd.enabled). Binaries/libs come from konsta_apps/Android.mk.
+PRODUCT_PACKAGES += \
+    sshd_bin \
+    ssh_client \
+    ssh_keygen \
+    libssh_prebuilt
+
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/konsta_apps/ssh/sshd.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/sshd.rc \
+    $(DEVICE_PATH)/konsta_apps/ssh/start-ssh:$(TARGET_COPY_OUT_SYSTEM)/bin/start-ssh:executable \
+    $(DEVICE_PATH)/konsta_apps/ssh/sshd_config:$(TARGET_COPY_OUT_SYSTEM)/etc/ssh/sshd_config

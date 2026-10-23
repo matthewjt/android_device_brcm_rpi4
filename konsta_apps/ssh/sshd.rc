@@ -1,0 +1,17 @@
+on post-fs-data
+    mkdir /data/ssh 0700 root shell
+    mkdir /data/ssh/empty 0600 root shell
+
+on property:sys.boot_completed=1 && property:persist.sshd.enabled=1
+    start sshd
+
+on property:persist.sshd.enabled=0
+    stop sshd
+
+# Runs start-ssh (NOT sshd directly): generates host keys + seeds /data/ssh/sshd_config
+# first, then execs sshd in the foreground so init can stop it.
+service sshd /system/bin/start-ssh
+    user root
+    group root
+    oneshot
+    disabled
