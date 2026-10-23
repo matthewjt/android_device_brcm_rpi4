@@ -221,7 +221,7 @@ PRODUCT_PACKAGES += \
     ssh_keygen \
     libssh
 
+# sshd.rc installs via LOCAL_INIT_RC on sshd_bin (-> /system/etc/init/sshd.rc).
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/konsta_apps/ssh/sshd.rc:$(TARGET_COPY_OUT_SYSTEM)/etc/init/sshd.rc \
     $(DEVICE_PATH)/konsta_apps/ssh/start-ssh:$(TARGET_COPY_OUT_SYSTEM)/bin/start-ssh:executable \
     $(DEVICE_PATH)/konsta_apps/ssh/sshd_config:$(TARGET_COPY_OUT_SYSTEM)/etc/ssh/sshd_config
