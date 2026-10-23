@@ -4,7 +4,11 @@
 // device/google/atv/products/atv_system_ext.mk (via atv_base.mk inherit); inherited
 // packages are appended to OUR file AFTER our filter-out runs, so kati cannot remove
 // them (attempt 6 proved it: filter-out present, TvSettings still installed).
-// soong_override_module unconditionally replaces the source module.
+//
+// Module type note: "prebuilt_apk" is Android.mk-ONLY (soong bp-parser: unrecognized
+// module type). In Android.bp the prebuilt-APK type is android_app_import. The
+// replacement mechanism in .bp = overrides: [<source module>] (suppresses the source
+// module's install) + installable:false (installs NOTHING) = supported suppression.
 //
 // BOTH stock modules declare the SAME package com.android.tv.settings:
 //   - TvSettingsTwoPanel  (the app Kang patched)
@@ -13,8 +17,8 @@
 //   "Raspberry Pi settings" row in Device preferences + "Restart to recovery"
 //   (sys.rpi.recovery=recovery -> GPIO21 -> TWRP).
 // A duplicate package = PMS fatal install failure = boot loop, so EXACTLY ONE
-// install may exist: Kang's APK at the stock TwoPanel path. The classic slot becomes
-// a non-installable stub that overrides the TvSettings install out of the image.
+// install may exist: Kang's APK (installed as KangTvSettingsTwoPanel.apk in
+// system_ext/priv-app/KangTvSettingsTwoPanel/). The classic slot installs nothing.
 //
 // The APK is ALREADY signed with the AOSP platform test key -> certificate: "presigned".
 
@@ -22,13 +26,11 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
-// Replaces the stock TvSettingsTwoPanel source module; installs at
-// system_ext/priv-app/TvSettingsTwoPanel/TvSettingsTwoPanel.apk.
-prebuilt_apk {
+// Kang's patched TV Settings; overrides suppress the stock TwoPanel install.
+android_app_import {
     name: "KangTvSettingsTwoPanel",
     src: "TvSettingsTwoPanel-kang.apk",
     certificate: "presigned",
-    soong_override_module: true,
     overrides: ["TvSettingsTwoPanel"],
     system_ext_specific: true,
     privileged: true,
@@ -36,14 +38,13 @@ prebuilt_apk {
     installable: true,
 }
 
-// Non-installable stub: soong_override_module takes the classic TvSettings slot,
-// installable:false means NOTHING is installed for it, and overrides: removes the
-// source TvSettings from the install set. Net: zero copies of the classic app.
-prebuilt_apk {
+// Suppression stub: overrides removes the classic TvSettings from the install set;
+// installable:false means NOTHING is installed for it (src is never installed).
+// Net: zero copies of the classic app, exactly one com.android.tv.settings on device.
+android_app_import {
     name: "KangTvSettingsClassic",
     src: "TvSettingsTwoPanel-kang.apk",
     certificate: "presigned",
-    soong_override_module: true,
     overrides: ["TvSettings"],
     system_ext_specific: true,
     privileged: true,
