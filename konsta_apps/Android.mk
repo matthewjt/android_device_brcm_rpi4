@@ -73,6 +73,7 @@ LOCAL_SRC_FILES := ssh/sshd
 LOCAL_MODULE_PATH := $(TARGET_OUT)/bin
 LOCAL_MODULE_STEM := sshd
 LOCAL_MULTILIB := 64
+LOCAL_SHARED_LIBRARIES := libcrypto libssl libz libcutils libssh
 LOCAL_INIT_RC := ssh/sshd.rc
 include $(BUILD_PREBUILT)
 
@@ -84,6 +85,7 @@ LOCAL_SRC_FILES := ssh/ssh
 LOCAL_MODULE_PATH := $(TARGET_OUT)/bin
 LOCAL_MODULE_STEM := ssh
 LOCAL_MULTILIB := 64
+LOCAL_SHARED_LIBRARIES := libcrypto libssl libz libssh
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
@@ -94,6 +96,7 @@ LOCAL_SRC_FILES := ssh/ssh-keygen
 LOCAL_MODULE_PATH := $(TARGET_OUT)/bin
 LOCAL_MODULE_STEM := ssh-keygen
 LOCAL_MULTILIB := 64
+LOCAL_SHARED_LIBRARIES := libcrypto libssl libz libssh
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)
