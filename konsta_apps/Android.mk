@@ -108,4 +108,5 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES := ssh/libssh.so
 LOCAL_MODULE_SUFFIX := .so
 LOCAL_MULTILIB := 64
+LOCAL_SHARED_LIBRARIES := libcrypto libssl libz
 include $(BUILD_PREBUILT)
