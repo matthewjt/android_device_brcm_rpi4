@@ -29,6 +29,17 @@ package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
+// certificate: "presigned" references an android_app_certificate module named
+// "presigned" (soong app.go:1954: <certificate>.x509.pem/.pk8 next to the .bp).
+// ninja fails 'presigned.x509.pem missing' without it (attempt 9, 00:53). The
+// presigned path copies the APK AS-IS (no re-sign); the files are our platform
+// test-keys (the Kang APK is already signed with them - consistent, and the
+// presigned apk verifier checks signature/alignment against the target).
+android_app_certificate {
+    name: "presigned",
+    certificate: "presigned",
+}
+
 android_app_import {
     name: "KangTvSettingsTwoPanel",
     apk: "TvSettingsTwoPanel-kang.apk",
