@@ -35,15 +35,17 @@ package {
 // presigned path copies the APK AS-IS (no re-sign); the files are our platform
 // test-keys (the Kang APK is already signed with them - consistent, and the
 // presigned apk verifier checks signature/alignment against the target).
-android_app_certificate {
-    name: "presigned",
-    certificate: "presigned",
-}
+// Presigned handling in THIS tree's soong (java/app_import.go:114,131): the
+// certificate property takes a module reference ONLY in the form ":module"
+// (bare "presigned" -> legacy name lookup at build/make/target/product/security/
+// presigned.x509.pem = attempt 10 ninja failure). The supported form for an
+// already-signed APK is the dedicated property: presigned: true (copies the APK
+// as-is; check_prebuilt_presigned_apk.py verifies alignment/signature).
 
 android_app_import {
     name: "KangTvSettingsTwoPanel",
     apk: "TvSettingsTwoPanel-kang.apk",
-    certificate: "presigned",
+    presigned: true,
     overrides: ["TvSettingsTwoPanel", "TvSettings"],
     system_ext_specific: true,
     privileged: true,
