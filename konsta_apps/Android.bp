@@ -46,6 +46,10 @@ android_app_import {
     name: "KangTvSettingsTwoPanel",
     apk: "TvSettingsTwoPanel-kang.apk",
     presigned: true,
+    // check_prebuilt_presigned_apk.py (attempt 12, 18:43): presigned prebuilts with
+    // targetSdkVersion >= 30 MUST set preprocessed: true - the APK is already
+    // zipaligned + v2-signed and the build system must not touch it afterwards.
+    preprocessed: true,
     overrides: ["TvSettingsTwoPanel", "TvSettings"],
     system_ext_specific: true,
     privileged: true,
