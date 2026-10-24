@@ -50,4 +50,9 @@ android_app_import {
     system_ext_specific: true,
     privileged: true,
     compile_multilib: "64",
+    // Kang's manifest declares uses-library-not-required for these (same pattern as
+    // DeviceSettings; kati used LOCAL_ENFORCE_USES_LIBRARIES:=false). manifest_check
+    // (attempt 11, 10:04) fails on the undeclared entries; declaring them as OPTIONAL
+    // satisfies it properly: they are optional in the manifest, absent in the build.
+    optional_uses_libs: ["androidx.window.extensions", "androidx.window.sidecar"],
 }
