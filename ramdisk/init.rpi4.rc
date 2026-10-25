@@ -2,6 +2,10 @@ import /vendor/etc/init/hw/init.${ro.hardware}.usb.rc
 
 on init
     symlink /sdcard /storage/sdcard0
+    # Android 16 shows a "This app isn't compatible" DeprecatedAbiDialog and KILLS
+    # 32-bit-only apps (AppWarnings.java; validated live: setting it lets Netflix TV
+    # 32-bit start). Suppress framework-side; debug.* is settable by init on userdebug.
+    setprop debug.wm.disable_deprecated_abi_dialog 1
 
 on fs
     mount_all /vendor/etc/fstab.${ro.hardware} --early
@@ -10,8 +14,10 @@ on late-fs
     mount_all /vendor/etc/fstab.${ro.hardware} --late
 
 # Request TWRP on the next boot - KonstaKANG's ramdisk-swap mechanism:
-# rpi-recovery.sh swaps ramdisk.img <-> ramdisk-recovery.img on the boot FAT (p1,
-# now mounted via fstab) and toggles the vc4-kms-v3d dtoverlay for TWRP. On the
+# rpi-recovery.sh swaps ramdisk.img <-> ramdisk-recovery.img on the boot FAT (p1;
+# mounted ON DEMAND at /dev/bootmnt - the rootfs is read-only so no fstab mount point
+# can exist, and init's mount_all silently skips entries with missing mount points)
+# and toggles the vc4-kms-v3d dtoverlay for TWRP. On the
 # (warm) reboot the Pi firmware loads ramdisk.img - which is now the TWRP ramdisk.
 # The GPIO21 sysfs approach in our earlier attempt can NEVER work on this kernel:
 # the pinctrl chip numbers at base 512 (gpiochip512), so export of legacy "21"
