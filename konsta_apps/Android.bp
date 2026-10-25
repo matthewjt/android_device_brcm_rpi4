@@ -60,3 +60,17 @@ android_app_import {
     // satisfies it properly: they are optional in the manifest, absent in the build.
     optional_uses_libs: ["androidx.window.extensions", "androidx.window.sidecar"],
 }
+
+// Kang's LineageSettingsProvider (extracted from his image, zipaligned -p 4 + platform
+// re-signed, verified CN=Android c8a2e9bc...). package org.lineageos.lineagesettings,
+// sharedUserId=android.uid.system, targetSdk 36 -> presigned+preprocessed contract
+// satisfied by our signing pass. Installs system_ext/priv-app/LineageSettingsProvider/.
+android_app_import {
+    name: "KangLineageSettingsProvider",
+    apk: "LineageSettingsProvider-kang.apk",
+    presigned: true,
+    preprocessed: true,
+    system_ext_specific: true,
+    privileged: true,
+    compile_multilib: "64",
+}

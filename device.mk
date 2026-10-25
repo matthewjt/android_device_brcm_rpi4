@@ -214,7 +214,16 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     DeviceSettings \
     LineageCustomizer \
-    KangTvSettingsTwoPanel
+    KangTvSettingsTwoPanel \
+    KangLineageSettingsProvider
+
+# LineageSettingsProvider (org.lineageos.lineagesettings, sharedUserId=android.uid.system,
+# platform re-signed) = the provider Kang's TV Settings queries
+# (LineageSettings.Secure "advanced_reboot"); without it RebootConfirmFragment NPEs on open.
+# lineage-seeder.sh seeds advanced_reboot=1 at boot (LineageOS normally does that from its
+# framework; we run AOSP) - rc installed via LOCAL_INIT_RC on sshd_bin.
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)/konsta_apps/lineage-seeder.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/lineage-seeder.sh:executable
 
 # SSH infrastructure (KonstaKANG OpenSSH stack; toggle = DeviceSettings "SSH" ->
 # persist.sshd.enabled). Binaries/libs come from konsta_apps/Android.mk.

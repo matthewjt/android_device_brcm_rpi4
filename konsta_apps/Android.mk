@@ -54,7 +54,7 @@ LOCAL_MODULE_PATH := $(TARGET_OUT)/bin
 LOCAL_MODULE_STEM := sshd
 LOCAL_MULTILIB := 64
 LOCAL_SHARED_LIBRARIES := libcrypto libssl libz libcutils libssh
-LOCAL_INIT_RC := ssh/sshd.rc
+LOCAL_INIT_RC := ssh/sshd.rc lineage_seeder.rc
 include $(BUILD_PREBUILT)
 
 include $(CLEAR_VARS)

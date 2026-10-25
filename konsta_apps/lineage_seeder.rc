@@ -1,0 +1,11 @@
+# Seeds LineageSettings secure/advanced_reboot=1 after boot so Kang's Restart dialog
+# renders "Restart to recovery" (provider installed = KangLineageSettingsProvider).
+on property:sys.boot_completed=1
+    start lineage_seeder
+
+service lineage_seeder /system/bin/lineage-seeder.sh
+    user root
+    group root
+    seclabel u:r:su:s0
+    oneshot
+    disabled

@@ -10,8 +10,13 @@ on property:persist.sshd.enabled=0
 
 # Runs start-ssh (NOT sshd directly): generates host keys + seeds /data/ssh/sshd_config
 # first, then execs sshd in the foreground so init can stop it.
+# seclabel: init refuses system_file-labeled services with no domain transition EVEN IN
+# PERMISSIVE mode (dmesg 380.98s: "has incorrect label or no domain transition from
+# u:r:init:s0"). su domain = valid on userdebug+permissive. Proper sshd sepolicy domain
+# (KonstaKANG's) is the follow-up for enforcing builds.
 service sshd /system/bin/start-ssh
     user root
     group root
+    seclabel u:r:su:s0
     oneshot
     disabled
