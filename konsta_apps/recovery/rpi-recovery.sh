@@ -43,13 +43,23 @@ if [ -z $1 ] || [ $1 == "recovery" ]; then
   mount_boot
   recovery_ramdisk
   unmount_boot
-  finish
+  # Kang's design relies on the caller (his settings app) rebooting after the
+  # property write. On our Android 16 base the app's reboot request dies in
+  # binder ('cannot find target node', transaction -22) -> device never reboots.
+  # The service reboots itself after the vfat unmount has flushed the renames.
+  sync
+  setprop sys.boot_completed 0
+  reboot
+  exit 0
 elif [ $1 == "boot" ]; then
   check_root
   mount_boot
   boot_ramdisk
   unmount_boot
-  finish
+  sync
+  setprop sys.boot_completed 0
+  reboot
+  exit 0
 else
   echo "Usage: $0 [recovery|boot]"
 fi
