@@ -8,41 +8,47 @@
 
 # Ported from KonstaKANG's /vendor/bin (our copy installs to /system/bin, so the
 # source path is adjusted). Mechanism: swap ramdisk.img <-> ramdisk-recovery.img
-# on the /boot FAT (mounted rw via fstab.rpi4) and toggle the vc4-kms-v3d
-# dtoverlay for TWRP; the reboot is issued by the caller (settings app / shell).
+# on the boot FAT and toggle the vc4-kms-v3d dtoverlay for TWRP; the reboot is
+# issued by the caller (settings app / shell).
+#
+# MOUNT DESIGN (differs from Kang, on purpose): Android's rootfs is READ-ONLY,
+# so a /boot directory cannot exist and init's mount_all silently skips any fstab
+# entry whose mount point is missing (Kang's own rom: 'mount -o rw,remount /boot'
+# fails, script no-ops silently - his TV recovery path is broken by this too).
+# We mount the FAT ON DEMAND at /dev/bootmnt (tmpfs, writable) and unmount after.
 source /system/bin/rpi-utils.sh
 
 recovery_ramdisk()
 {
-  if [ -f /boot/ramdisk-recovery.img ] && [ ! -f /boot/ramdisk-boot.img ]; then
+  if [ -f $BOOT/ramdisk-recovery.img ] && [ ! -f $BOOT/ramdisk-boot.img ]; then
     echo "Changing to recovery ramdisk..."
-    mv /boot/ramdisk.img /boot/ramdisk-boot.img
-    mv /boot/ramdisk-recovery.img /boot/ramdisk.img
-    disable_property dtoverlay=vc4-kms-v3d /boot/config.txt
+    mv $BOOT/ramdisk.img $BOOT/ramdisk-boot.img
+    mv $BOOT/ramdisk-recovery.img $BOOT/ramdisk.img
+    disable_property dtoverlay=vc4-kms-v3d $BOOT/config.txt
   fi
 }
 
 boot_ramdisk()
 {
-  if [ -f /boot/ramdisk-boot.img ] && [ ! -f /boot/ramdisk-recovery.img ]; then
+  if [ -f $BOOT/ramdisk-boot.img ] && [ ! -f $BOOT/ramdisk-recovery.img ]; then
     echo "Changing to boot ramdisk..."
-    mv /boot/ramdisk.img /boot/ramdisk-recovery.img
-    mv /boot/ramdisk-boot.img /boot/ramdisk.img
-    enable_property dtoverlay=vc4-kms-v3d /boot/config.txt
+    mv $BOOT/ramdisk.img $BOOT/ramdisk-recovery.img
+    mv $BOOT/ramdisk-boot.img $BOOT/ramdisk.img
+    enable_property dtoverlay=vc4-kms-v3d $BOOT/config.txt
   fi
 }
 
 if [ -z $1 ] || [ $1 == "recovery" ]; then
   check_root
-  mount_rw /boot
+  mount_boot
   recovery_ramdisk
-  mount_ro /boot
+  unmount_boot
   finish
 elif [ $1 == "boot" ]; then
   check_root
-  mount_rw /boot
+  mount_boot
   boot_ramdisk
-  mount_ro /boot
+  unmount_boot
   finish
 else
   echo "Usage: $0 [recovery|boot]"
