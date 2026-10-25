@@ -9,24 +9,23 @@ on fs
 on late-fs
     mount_all /vendor/etc/fstab.${ro.hardware} --late
 
-# GPIO21 (physical pin 40) is what the Pi firmware samples at power-on to pick the
-# initramfs. Export it once early so the recovery trigger only has to drive it low.
-# init's built-in write/reboot run in the init domain: no SELinux domain transition
-# needed (init's 'exec' of /system/bin/sh fails outright - no init->shell transition).
-on early-boot
-    write /sys/class/gpio/export 21
+# Request TWRP on the next boot - KonstaKANG's ramdisk-swap mechanism:
+# rpi-recovery.sh swaps ramdisk.img <-> ramdisk-recovery.img on the boot FAT (p1,
+# now mounted via fstab) and toggles the vc4-kms-v3d dtoverlay for TWRP. On the
+# (warm) reboot the Pi firmware loads ramdisk.img - which is now the TWRP ramdisk.
+# The GPIO21 sysfs approach in our earlier attempt can NEVER work on this kernel:
+# the pinctrl chip numbers at base 512 (gpiochip512), so export of legacy "21"
+# fails with "export_store: invalid GPIO 21" and init's writes silently no-op.
+# The physical jumper (pin40->pin39 GND) still works: firmware samples the pad,
+# not sysfs. Kang's settings apps set the property THEN reboot the device themselves;
+# the service's mount_ro remount flushes the vfat rename before they finish.
+# Manual: su -c 'setprop sys.rpi.recovery recovery; sleep 2; reboot'
+on property:sys.rpi.recovery=*
+    start rpi_recovery
 
-# Request TWRP on the next boot: drive GPIO21 low, then reboot.
-# The "Raspberry Pi settings" app writes sys.rpi.recovery=1 for exactly this;
-# it can also be triggered by hand: adb shell setprop sys.rpi.recovery 1
-on property:sys.rpi.recovery=1
-    write /sys/class/gpio/gpio21/direction out
-    write /sys/class/gpio/gpio21/value 0
-    setprop sys.powerctl reboot
-
-# Same action as sent by KangTvSettingsTwoPanel's "Restart to recovery" button
-# (SystemProperties.set("sys.rpi.recovery","recovery") in KonstaKANG's RebootConfirmFragment).
-on property:sys.rpi.recovery=recovery
-    write /sys/class/gpio/gpio21/direction out
-    write /sys/class/gpio/gpio21/value 0
-    setprop sys.powerctl reboot
+service rpi_recovery /system/bin/rpi-recovery.sh ${sys.rpi.recovery}
+    user root
+    group root
+    seclabel u:r:su:s0
+    oneshot
+    disabled

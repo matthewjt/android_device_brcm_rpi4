@@ -198,10 +198,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.wifi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.wifi.xml
 
-# Drives GPIO21 low and reboots so the Pi firmware loads the TWRP initramfs
-# (triggered by sys.rpi.recovery=1 in ramdisk/init.rpi4.rc).
+# Reboot-to-recovery: Kang's ramdisk-swap scripts (swap ramdisk.img <->
+# ramdisk-recovery.img on the boot FAT + toggle the KMS dtoverlay). Triggered by
+# sys.rpi.recovery=* in ramdisk/init.rpi4.rc (service, seclabel su). Requires the
+# /boot vfat fstab entry (added; Kang's own fstab lacks it = his silent no-op bug).
 PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)/ramdisk/rpi-recovery.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rpi-recovery.sh:executable
+    $(DEVICE_PATH)/konsta_apps/recovery/rpi-recovery.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rpi-recovery.sh:executable \
+    $(DEVICE_PATH)/konsta_apps/recovery/rpi-utils.sh:$(TARGET_COPY_OUT_SYSTEM)/bin/rpi-utils.sh:executable
 
 # KonstaKANG apps (imported presigned via BUILD_PREBUILT in konsta_apps/Android.mk)
 # DeviceSettings is re-signed with the AOSP platform key: sharedUserId=android.uid.system

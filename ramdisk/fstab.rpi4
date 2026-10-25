@@ -7,5 +7,9 @@
 /dev/block/mmcblk0p6                       /vendor      ext4    ro,barrier=1                       wait,first_stage_mount
 /dev/block/mmcblk0p7                       /metadata    ext4    nodev,noatime,nosuid               wait,check,formattable,first_stage_mount
 /dev/block/mmcblk0p3                       /data        ext4    nodev,noatime,nosuid,errors=panic  wait,check,formattable,quota
+# Boot FAT partition (p1). Mounted rw so rpi-recovery.sh can swap ramdisk.img <->
+# ramdisk-recovery.img for the reboot-to-recovery flow (Kang's mechanism; his own
+# fstab lacks this line, which is why his TV recovery path silently no-ops).
+/dev/block/mmcblk0p1                       /boot        vfat    rw,shortname=lower,uid=0,gid=0,dmask=077,fmask=077 wait
 /devices/platform/scb/*.pcie/*/*/*/usb*    auto         auto    defaults                           voldmanaged=usb:auto
 /devices/platform/soc/*.usb/usb*           auto         auto    defaults                           voldmanaged=usb:auto
