@@ -11,6 +11,10 @@ prebuilt_apex {
     filename: "com.android.tethering.apex",
     installable: true,
     overrides: ["com.android.tethering"],
+    // Wires the source systemserverclasspath fragment to THIS prebuilt so soong
+    // dexpreopts service-connectivity.jar deapexed from Kang's payload; without it
+    // dex_preopt_check fails (missing apex@com.android.tethering@...odex/.vdex).
+    exported_systemserverclasspath_fragments: ["com.android.tethering-systemserverclasspath-fragment"],
 }
 
 prebuilt_apex {
