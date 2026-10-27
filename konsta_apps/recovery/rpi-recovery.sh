@@ -49,7 +49,7 @@ if [ -z $1 ] || [ $1 == "recovery" ]; then
   # The service reboots itself after the vfat unmount has flushed the renames.
   sync
   setprop sys.boot_completed 0
-  reboot
+  /system/bin/reboot
   exit 0
 elif [ $1 == "boot" ]; then
   check_root
@@ -58,7 +58,7 @@ elif [ $1 == "boot" ]; then
   unmount_boot
   sync
   setprop sys.boot_completed 0
-  reboot
+  /system/bin/reboot
   exit 0
 else
   echo "Usage: $0 [recovery|boot]"
