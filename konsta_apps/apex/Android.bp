@@ -5,16 +5,18 @@
 // and network; our Aug-2026 mainline (netd_updatable/dns_helper/connectivity-jni
 // all hash-differ) does not. Graft Kang's tethering + resolv apexes, overriding
 // the source-built equivalents. See NOTES.md 2026-10-27.
-apex {
+prebuilt_apex {
     name: "com.android.tethering-kang",
-    import: "com.android.tethering@361099999.apex",
+    src: "com.android.tethering@361099999.apex",
+    filename: "com.android.tethering.apex",
     installable: true,
     overrides: ["com.android.tethering"],
 }
 
-apex {
+prebuilt_apex {
     name: "com.android.resolv-kang",
-    import: "com.android.resolv@361099999.apex",
+    src: "com.android.resolv@361099999.apex",
+    filename: "com.android.resolv.apex",
     installable: true,
     overrides: ["com.android.resolv"],
 }
