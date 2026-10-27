@@ -7,6 +7,7 @@
 // the source-built equivalents. See NOTES.md 2026-10-27.
 prebuilt_apex {
     name: "com.android.tethering-kang",
+    apex_name: "com.android.tethering",
     src: "com.android.tethering@361099999.apex",
     filename: "com.android.tethering.apex",
     installable: true,
@@ -14,11 +15,14 @@ prebuilt_apex {
     // Wires the source systemserverclasspath fragment to THIS prebuilt so soong
     // dexpreopts service-connectivity.jar deapexed from Kang's payload; without it
     // dex_preopt_check fails (missing apex@com.android.tethering@...odex/.vdex).
+    // apex_name is REQUIRED: dexpreoptSystemServerJars matches on it (defaults to
+    // module name "com.android.tethering-kang" = no match = no odex).
     exported_systemserverclasspath_fragments: ["com.android.tethering-systemserverclasspath-fragment"],
 }
 
 prebuilt_apex {
     name: "com.android.resolv-kang",
+    apex_name: "com.android.resolv",
     src: "com.android.resolv@361099999.apex",
     filename: "com.android.resolv.apex",
     installable: true,
