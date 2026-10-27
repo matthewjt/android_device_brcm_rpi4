@@ -52,6 +52,12 @@ PRODUCT_PACKAGES += \
     SettingsProviderTvRpiOverlay \
     WifiRpiOverlay
 
+# Kang mainline apex graft (DNS root cause: Kang May-2026 mainline delivers
+# per-app DnsConfig; our Aug mainline fails Chromium reads. konsta_apps/apex/Android.bp)
+PRODUCT_PACKAGES += \
+    com.android.tethering-kang \
+    com.android.resolv-kang
+
 # Device identifier. This must come after all inclusions.
 PRODUCT_DEVICE := rpi4
 PRODUCT_NAME := aosp_rpi4_tv

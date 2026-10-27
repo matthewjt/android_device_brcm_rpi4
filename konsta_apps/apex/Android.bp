@@ -1,0 +1,20 @@
+// Kang's known-good mainline apexes (lineage-23.2-20260520).
+// Root cause of app-level net::ERR_INTERNET_DISCONNECTED / Netflix -11 on our
+// build: Chromium's "Failed to read DnsConfig" (dns_config_service_android.cc:81).
+// Kang (May-2026 mainline) delivers per-app DNS config fine on identical hardware
+// and network; our Aug-2026 mainline (netd_updatable/dns_helper/connectivity-jni
+// all hash-differ) does not. Graft Kang's tethering + resolv apexes, overriding
+// the source-built equivalents. See NOTES.md 2026-10-27.
+apex {
+    name: "com.android.tethering-kang",
+    import: "com.android.tethering@361099999.apex",
+    installable: true,
+    overrides: ["com.android.tethering"],
+}
+
+apex {
+    name: "com.android.resolv-kang",
+    import: "com.android.resolv@361099999.apex",
+    installable: true,
+    overrides: ["com.android.resolv"],
+}
