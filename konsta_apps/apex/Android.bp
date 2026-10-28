@@ -11,6 +11,10 @@ prebuilt_apex {
     src: "com.android.tethering@361099999.apex",
     filename: "com.android.tethering.apex",
     installable: true,
+    // prefer: true = this prebuilt wins over the source apex (soong
+    // overridable-module machinery); with only overrides: the prebuilt is
+    // hidden from make -> "non-existent modules in PRODUCT_PACKAGES".
+    prefer: true,
     overrides: ["com.android.tethering"],
     // Wires the source systemserverclasspath fragment to THIS prebuilt so soong
     // dexpreopts service-connectivity.jar deapexed from Kang's payload; without it
@@ -26,5 +30,6 @@ prebuilt_apex {
     src: "com.android.resolv@361099999.apex",
     filename: "com.android.resolv.apex",
     installable: true,
+    prefer: true,
     overrides: ["com.android.resolv"],
 }
