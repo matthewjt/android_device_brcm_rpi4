@@ -55,6 +55,7 @@ PRODUCT_PACKAGES += \
 # Kang mainline apex graft (DNS root cause: Kang May-2026 mainline delivers
 # per-app DnsConfig; our Aug mainline fails Chromium reads. konsta_apps/apex/Android.bp)
 PRODUCT_PACKAGES += \
+    all_apex_contributions \
     com.android.tethering-kang \
     com.android.resolv-kang
 

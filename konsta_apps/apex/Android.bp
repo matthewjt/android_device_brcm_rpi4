@@ -5,6 +5,19 @@
 // and network; our Aug-2026 mainline (netd_updatable/dns_helper/connectivity-jni
 // all hash-differ) does not. Graft Kang's tethering + resolv apexes, overriding
 // the source-built equivalents. See NOTES.md 2026-10-27.
+// Mainline prebuilt selection registry (soong android/apex_contributions.go):
+// apex modules auto-depend on the module named literally "all_apex_contributions";
+// listing a prebuilt module name in contents marks it as the selected contribution,
+// which is what passes the mainline-prebuilt visibility gate (the gate hid the
+// kang apexes from make -> 'non-existent modules in PRODUCT_PACKAGES').
+all_apex_contributions {
+    name: "all_apex_contributions",
+    contents: [
+        "com.android.tethering-kang",
+        "com.android.resolv-kang",
+    ],
+}
+
 prebuilt_apex {
     name: "com.android.tethering-kang",
     apex_name: "com.android.tethering",
