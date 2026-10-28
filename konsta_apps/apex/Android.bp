@@ -4,41 +4,46 @@
 // Kang (May-2026 mainline) delivers per-app DNS config fine on identical hardware
 // and network; our Aug-2026 mainline (netd_updatable/dns_helper/connectivity-jni
 // all hash-differ) does not. Graft Kang's tethering + resolv apexes, overriding
-// the source-built equivalents. See NOTES.md 2026-10-27.
-// Mainline prebuilt selection registry (soong android/apex_contributions.go):
-// apex modules auto-depend on the module named literally "all_apex_contributions";
-// listing a prebuilt module name in contents marks it as the selected contribution,
-// which is what passes the mainline-prebuilt visibility gate (the gate hid the
-// kang apexes from make -> 'non-existent modules in PRODUCT_PACKAGES').
+// the source-built equivalents. See NOTES.md 2026-10-27/28.
+//
+// Selection machinery (this tree's soong, Android 16):
+//  - mainline apex prebuilts are hidden from make unless the psi registry
+//    (all_apex_contributions container + apex_contributions contents selected via
+//    RELEASE_APEX_CONTRIBUTIONS_* build flags) selects them;
+//  - product_config.mk forces IgnoreApex=true when PRODUCT_MODULE_BUILD_FROM_SOURCE
+//   =true, and for non-gapps products -> leaf mk sets it false AND
+//    build/make/core/product_config.mk gapps heuristic patched out (tree-local).
+apex_contributions {
+    name: "rpi4-kang-tethering-contributions",
+    api_domain: "com.android.tethering",
+    contents: ["com.android.tethering-kang"],
+}
+
+apex_contributions {
+    name: "rpi4-kang-resolv-contributions",
+    api_domain: "com.android.resolv",
+    contents: ["com.android.resolv-kang"],
+}
+
 all_apex_contributions {
     name: "all_apex_contributions",
-    contents: [
-        "com.android.tethering-kang",
-        "com.android.resolv-kang",
-    ],
 }
 
 prebuilt_apex {
     name: "com.android.tethering-kang",
     apex_name: "com.android.tethering",
-    // source_apex_name: BaseModuleName() = apex_name = early-exits the
-    // mainline-prebuilt visibility gate (prebuilt.go:758) and wires prefer:true
-    // to shadow the source apex. Without it the module is hidden from make
-    // (mainline prebuilt "not flagged") -> 'non-existent modules in PRODUCT_PACKAGES'.
+    // BaseModuleName() == apex_name: early-exits the mainline visibility gate
+    // (prebuilt.go:758) and wires prefer:true to shadow the source apex.
     source_apex_name: "com.android.tethering",
     src: "com.android.tethering@361099999.apex",
     filename: "com.android.tethering.apex",
     installable: true,
-    // prefer: true = this prebuilt wins over the source apex (soong
-    // overridable-module machinery); with only overrides: the prebuilt is
-    // hidden from make -> "non-existent modules in PRODUCT_PACKAGES".
     prefer: true,
     overrides: ["com.android.tethering"],
     // Wires the source systemserverclasspath fragment to THIS prebuilt so soong
     // dexpreopts service-connectivity.jar deapexed from Kang's payload; without it
     // dex_preopt_check fails (missing apex@com.android.tethering@...odex/.vdex).
-    // apex_name is REQUIRED: dexpreoptSystemServerJars matches on it (defaults to
-    // module name "com.android.tethering-kang" = no match = no odex).
+    // apex_name is REQUIRED: dexpreoptSystemServerJars matches on it.
     exported_systemserverclasspath_fragments: ["com.android.tethering-systemserverclasspath-fragment"],
 }
 

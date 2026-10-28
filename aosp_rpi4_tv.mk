@@ -59,6 +59,14 @@ PRODUCT_PACKAGES += \
     com.android.tethering-kang \
     com.android.resolv-kang
 
+# Enable the mainline contributions selection for the Kang apex graft above
+# (module defs in konsta_apps/apex/Android.bp): point the contributions flags at
+# our apex_contributions modules and stop forcing build-from-source, which
+# otherwise hides the kang apex prebuilts from make.
+PRODUCT_MODULE_BUILD_FROM_SOURCE := false
+RELEASE_APEX_CONTRIBUTIONS_CONNECTIVITY := rpi4-kang-tethering-contributions
+RELEASE_APEX_CONTRIBUTIONS_RESOLV := rpi4-kang-resolv-contributions
+
 # Device identifier. This must come after all inclusions.
 PRODUCT_DEVICE := rpi4
 PRODUCT_NAME := aosp_rpi4_tv
