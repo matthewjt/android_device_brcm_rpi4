@@ -8,6 +8,11 @@
 prebuilt_apex {
     name: "com.android.tethering-kang",
     apex_name: "com.android.tethering",
+    // source_apex_name: BaseModuleName() = apex_name = early-exits the
+    // mainline-prebuilt visibility gate (prebuilt.go:758) and wires prefer:true
+    // to shadow the source apex. Without it the module is hidden from make
+    // (mainline prebuilt "not flagged") -> 'non-existent modules in PRODUCT_PACKAGES'.
+    source_apex_name: "com.android.tethering",
     src: "com.android.tethering@361099999.apex",
     filename: "com.android.tethering.apex",
     installable: true,
@@ -27,6 +32,7 @@ prebuilt_apex {
 prebuilt_apex {
     name: "com.android.resolv-kang",
     apex_name: "com.android.resolv",
+    source_apex_name: "com.android.resolv",
     src: "com.android.resolv@361099999.apex",
     filename: "com.android.resolv.apex",
     installable: true,
