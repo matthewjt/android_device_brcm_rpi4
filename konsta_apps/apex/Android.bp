@@ -13,7 +13,7 @@
 cc_prebuilt_library_shared {
     name: "libnetd_updatable",
     compile_multilib: "64",
-    src: "kang/libnetd_updatable.so",
+    srcs: ["kang/libnetd_updatable.so"],
     min_sdk_version: "30",
     apex_available: ["com.android.tethering"],
     shared_libs: ["libbase", "liblog", "libnetdutils", "libc++"],
@@ -23,7 +23,7 @@ cc_prebuilt_library_shared {
 cc_prebuilt_library_shared {
     name: "libframework-connectivity-jni",
     compile_multilib: "64",
-    src: "kang/libframework-connectivity-jni.so",
+    srcs: ["kang/libframework-connectivity-jni.so"],
     min_sdk_version: "30",
     apex_available: ["com.android.tethering"],
     shared_libs: ["libandroid", "liblog", "libnativehelper"],
@@ -33,7 +33,7 @@ cc_prebuilt_library_shared {
 cc_prebuilt_library_shared {
     name: "libframework-connectivity-tiramisu-jni",
     compile_multilib: "64",
-    src: "kang/libframework-connectivity-tiramisu-jni.so",
+    srcs: ["kang/libframework-connectivity-tiramisu-jni.so"],
     min_sdk_version: "30",
     apex_available: ["com.android.tethering"],
     shared_libs: ["libandroid", "liblog", "libnativehelper"],
@@ -43,7 +43,7 @@ cc_prebuilt_library_shared {
 cc_prebuilt_library_shared {
     name: "libcom.android.tethering.dns_helper",
     compile_multilib: "64",
-    src: "kang/libcom.android.tethering.dns_helper.so",
+    srcs: ["kang/libcom.android.tethering.dns_helper.so"],
     min_sdk_version: "30",
     apex_available: ["com.android.tethering"],
     shared_libs: ["libbase", "libc++"],
@@ -53,7 +53,7 @@ cc_prebuilt_library_shared {
 cc_prebuilt_library_shared {
     name: "libservice-connectivity",
     compile_multilib: "64",
-    src: "kang/libservice-connectivity.so",
+    srcs: ["kang/libservice-connectivity.so"],
     min_sdk_version: "30",
     apex_available: ["com.android.tethering"],
     shared_libs: [
@@ -71,7 +71,7 @@ cc_prebuilt_library_shared {
 cc_prebuilt_library_shared {
     name: "libnetd_resolv",
     compile_multilib: "64",
-    src: "kang/libnetd_resolv.so",
+    srcs: ["kang/libnetd_resolv.so"],
     min_sdk_version: "30",
     apex_available: ["com.android.resolv"],
     shared_libs: [
