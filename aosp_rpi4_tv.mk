@@ -52,20 +52,9 @@ PRODUCT_PACKAGES += \
     SettingsProviderTvRpiOverlay \
     WifiRpiOverlay
 
-# Kang mainline apex graft (DNS root cause: Kang May-2026 mainline delivers
-# per-app DnsConfig; our Aug mainline fails Chromium reads. konsta_apps/apex/Android.bp)
-PRODUCT_PACKAGES += \
-    all_apex_contributions \
-    com.android.tethering-kang \
-    com.android.resolv-kang
-
-# Enable the mainline contributions selection for the Kang apex graft above
-# (module defs in konsta_apps/apex/Android.bp): point the contributions flags at
-# our apex_contributions modules and stop forcing build-from-source, which
-# otherwise hides the kang apex prebuilts from make.
-PRODUCT_MODULE_BUILD_FROM_SOURCE := false
-RELEASE_APEX_CONTRIBUTIONS_CONNECTIVITY := rpi4-kang-tethering-contributions
-RELEASE_APEX_CONTRIBUTIONS_RESOLV := rpi4-kang-resolv-contributions
+# Kang mainline DNS graft: member-level prebuilt shadows inside the SOURCE apexes
+# (konsta_apps/apex/Android.bp + kang/ files). No apex-level modules needed;
+# the shadows are selected via prefer:true, so no PRODUCT_PACKAGES entries.
 
 # Device identifier. This must come after all inclusions.
 PRODUCT_DEVICE := rpi4
