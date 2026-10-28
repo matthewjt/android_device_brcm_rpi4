@@ -94,32 +94,36 @@ java_import {
 
 java_sdk_library_import {
     name: "framework-connectivity",
-    jars: ["kang/framework-connectivity.jar"],
-    min_sdk_version: "30",
+    public: {
+        jars: ["kang/framework-connectivity.jar"],
+    },
     apex_available: ["com.android.tethering"],
     prefer: true,
 }
 
 java_sdk_library_import {
     name: "framework-connectivity-t",
-    jars: ["kang/framework-connectivity-t.jar"],
-    min_sdk_version: "30",
+    public: {
+        jars: ["kang/framework-connectivity-t.jar"],
+    },
     apex_available: ["com.android.tethering"],
     prefer: true,
 }
 
 java_sdk_library_import {
     name: "framework-connectivity-b",
-    jars: ["kang/framework-connectivity-b.jar"],
-    min_sdk_version: "30",
+    public: {
+        jars: ["kang/framework-connectivity-b.jar"],
+    },
     apex_available: ["com.android.tethering"],
     prefer: true,
 }
 
 java_sdk_library_import {
     name: "framework-tethering",
-    jars: ["kang/framework-tethering.jar"],
-    min_sdk_version: "30",
+    public: {
+        jars: ["kang/framework-tethering.jar"],
+    },
     apex_available: ["com.android.tethering"],
     prefer: true,
 }
